@@ -9,7 +9,7 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 # Download python3.9 and dependencies
-sudo apt-get install -y --no-install-recommends python3.9 python3-pip python3.9-venv rsync fuse git
+sudo apt-get install -y --no-install-recommends python3.9 python3-pip rsync fuse git
 
 PYTHON_PATH=$(which python3.9)
 
