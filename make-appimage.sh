@@ -3,21 +3,19 @@
 # exit on any failure
 set -e
 
-# Run on an ubuntu/debian machine.
+# docker run --rm -ti --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app python:3.9-slim bash
+# cd app && chmod ./make-appimage.sh && ./make-appimage.sh
 
 # Based on https://github.com/maltfield/cross-platform-python-gui/blob/af3aa35b671c7429c268ac09c7d4a80acf0ecbff/build/linux/buildAppImage.sh
 
-# Upgrade system
-sudo apt-get update
-sudo apt-get upgrade -y
+# Download dependencies
+apt-get update
+apt-get install -y --no-install-recommends rsync fuse git wget file
 
-# Download python3.9 and dependencies
-sudo apt-get install -y --no-install-recommends python3.9 python3-pip rsync fuse git
+PYTHON_PATH=$(which python)
 
-PYTHON_PATH=$(which python3.9)
-
-mkdir ../build
-cd ../build
+mkdir ./build
+cd ./build
 
 # Setup a venv
 $PYTHON_PATH -m venv venv
