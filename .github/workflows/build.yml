@@ -15,5 +15,5 @@ jobs:
         run: docker run --rm -ti --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app python:3.9-slim bash -c "cd /app && chmod +x make-appimage.sh && ./make-appimage.sh"
       - uses: actions/upload-artifact@v3
         with:
-        name: genoswitch.AppImage
-        path: build/dist/genoswitch.AppImage
+          name: genoswitch.AppImage
+          path: build/dist/genoswitch.AppImage
