@@ -36,7 +36,8 @@ chmod +x ./python3.9.18-cp39-cp39-manylinux2014_x86_64.AppImage
 ./python3.9.18-cp39-cp39-manylinux2014_x86_64.AppImage --appimage-extract
 
 # Copy installed dependencies from venv to kivy appdir
-rsync -a ./venv/ ./squashfs-root/opt/python3.9/
+#  --ignore-existing to not overwrite existing binaries.
+rsync -a  --ignore-existing ./venv/ ./squashfs-root/opt/python3.9/
 
 # Add our code
 rsync -a ../src ./squashfs-root/opt/
