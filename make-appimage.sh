@@ -3,14 +3,10 @@
 # exit on any failure
 set -e
 
-# docker run --rm -ti --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app python:3.9-slim bash
-# cd app && chmod ./make-appimage.sh && ./make-appimage.sh
-
 # Based on https://github.com/maltfield/cross-platform-python-gui/blob/af3aa35b671c7429c268ac09c7d4a80acf0ecbff/build/linux/buildAppImage.sh
 
 # Download dependencies
-apt-get update
-apt-get install -y --no-install-recommends rsync fuse git wget file
+pacman -Syyu rsync fuse git wget file cantarell-fonts adobe-source-sans-fonts noto-fonts-emoji adobe-source-code-pro-fonts
 
 PYTHON_PATH=$(which python)
 
@@ -38,6 +34,9 @@ chmod +x ./python3.9.18-cp39-cp39-manylinux2014_x86_64.AppImage
 # Copy installed dependencies from venv to kivy appdir
 #  --ignore-existing to not overwrite existing binaries.
 rsync -a  --ignore-existing ./venv/ ./squashfs-root/opt/python3.9/
+
+# Copy fonts
+rsync -a /usr/share/fonts ./squashfs/usr/share
 
 # Add our code
 rsync -a ../src ./squashfs-root/opt/
