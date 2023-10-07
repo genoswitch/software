@@ -3,10 +3,13 @@
 # exit on any failure
 set -e
 
+# docker run --rm -ti --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app python:3.9-slim bash -c "cd /app && chmod +x make-appimage.sh && ./make-appimage.sh"
+
 # Based on https://github.com/maltfield/cross-platform-python-gui/blob/af3aa35b671c7429c268ac09c7d4a80acf0ecbff/build/linux/buildAppImage.sh
 
 # Download dependencies
-pacman -Syyu which rsync fuse git wget file cantarell-fonts adobe-source-sans-fonts noto-fonts-emoji adobe-source-code-pro-fonts
+apt-get update
+apt-get install -y --no-install-recommends rsync fuse git wget file fonts-noto-color-emoji fonts-cantarell unzip
 
 PYTHON_PATH=$(which python)
 
@@ -35,11 +38,29 @@ chmod +x ./python3.9.18-cp39-cp39-manylinux2014_x86_64.AppImage
 #  --ignore-existing to not overwrite existing binaries.
 rsync -a  --ignore-existing ./venv/ ./squashfs-root/opt/python3.9/
 
-# Copy fonts
-rsync -a /usr/share/fonts ./squashfs/usr/share
-
 # Add our code
 rsync -a ../src ./squashfs-root/opt/
+
+mkdir -p ./squashfs/usr/share/fonts/noto
+mkdir -p ./squashfs/usr/share/fonts/cantarell
+mkdir -p ./squashfs/usr/share/fonts/adobe-source-sans
+
+rsync -a /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf ./squashfs/usr/share/fonts/noto/
+rsync -a /usr/share/fonts/opentype/cantarell/ ./squashfs/usr/share/fonts/cantarell/
+
+mkdir -p fonts/source-sans
+cd fonts/source-sans
+wget https://github.com/adobe-fonts/source-sans/releases/download/3.052R/OTF-source-sans-3.052R.zip
+unzip OTF-source-sans-3.052R.zip
+rsync -a ./OTF/SourceSans3* ../../squashfs/usr/share/fonts/adobe-source-sans/
+
+mkdir -p ../source-sans2
+cd ../source-sans2
+wget https://github.com/adobe-fonts/source-sans/releases/download/2.040R-ro%2F1.090R-it/source-sans-pro-2.040R-ro-1.090R-it.zip
+unzip source-sans-pro-2.040R-ro-1.090R-it.zip
+rsync -a ./source-sans-pro-2.040R-ro-1.090R-it/VAR/SourceSansVariable-Roman.otf ../../squashfs/usr/share/fonts/adobe-source-sans/
+
+cd ../../
 
 # change AppRun so it executes our app
 mv ./squashfs-root/AppRun ./squashfs-root/AppRun.orig
