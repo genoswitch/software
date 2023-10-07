@@ -6,7 +6,7 @@ set -e
 # Based on https://github.com/maltfield/cross-platform-python-gui/blob/af3aa35b671c7429c268ac09c7d4a80acf0ecbff/build/linux/buildAppImage.sh
 
 # Download dependencies
-pacman -Syyu rsync fuse git wget file cantarell-fonts adobe-source-sans-fonts noto-fonts-emoji adobe-source-code-pro-fonts
+pacman -Syyu which rsync fuse git wget file cantarell-fonts adobe-source-sans-fonts noto-fonts-emoji adobe-source-code-pro-fonts
 
 PYTHON_PATH=$(which python)
 
