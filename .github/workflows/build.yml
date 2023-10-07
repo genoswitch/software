@@ -12,8 +12,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Run build appimage script
-        run: docker run --rm -i --privileged --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app archlinux bash -c "cd /app && chmod +x make-appimage.sh && ./make-appimage.sh"
+        run: docker run --rm -i --privileged --cap-add SYS_ADMIN --device /dev/fuse -v ./:/app python:3.9-slim bash -c "cd /app && chmod +x make-appimage.sh && ./make-appimage.sh"
       - uses: actions/upload-artifact@v3
         with:
           name: genoswitch.AppImage
           path: build/dist/genoswitch.AppImage
+      - uses: softprops/action-gh-release@v1
+        with:
+          tag_name: dev
+          files: |
+            build/dist/genoswitch.AppImage
