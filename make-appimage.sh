@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# exit on any failure
+set -e
+
 # Run on an ubuntu/debian machine.
 
 # Based on https://github.com/maltfield/cross-platform-python-gui/blob/af3aa35b671c7429c268ac09c7d4a80acf0ecbff/build/linux/buildAppImage.sh
