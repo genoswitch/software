@@ -1,0 +1,15 @@
+name: Build
+
+on: "push"
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Run build appimage script
+        run: chmod +x ./make-appimage.sh && ./make-appimage.sh
